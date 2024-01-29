@@ -9,11 +9,21 @@ import { TaskService } from '../../services/task.service';
 })
 export class TasksComponent implements OnInit {
 
-  tasks: Task[] = this.taskService.getTasks();
+  tasks: Task[] = [];
 
   constructor(private taskService: TaskService) { }
 
   ngOnInit(): void {
+    //remember to do this type of calls (http request) in the ngOnInit method
+    //using as an observable
+    //subscribe to the observable like if it was a promise using the .then method
+    this.taskService.getTasks().subscribe((tasks) => (this.tasks = tasks));
   }
 
+  deleteTask(task: Task) {
+    this.taskService.deleteTask(task).subscribe(() => {
+      //filter out the task that was deleted
+      this.tasks = this.tasks.filter((t) => t.id !== task.id);
+    });
+  }
 }
