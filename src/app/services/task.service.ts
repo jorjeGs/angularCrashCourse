@@ -3,6 +3,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'; //import the Htt
 import { Observable} from 'rxjs';
 import { Task } from '../Task';
 
+//needed in order to send data to the server on a PUT request
+//in this case we are sending a json object
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json'
+  })
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,5 +28,10 @@ export class TaskService {
   deleteTask(task: Task): Observable<Task> {
     const url = `${this.apiUrl}/${task.id}`; //the url of the task to delete
     return this.http.delete<Task>(url); //return an observable of type Task
+  }
+
+  updateTaskReminder(task: Task): Observable<Task> {
+    const url = `${this.apiUrl}/${task.id}`; //the url of the task to update
+    return this.http.put<Task>(url, task, httpOptions); //return an observable of type Task
   }
 }
