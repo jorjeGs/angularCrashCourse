@@ -1,4 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { UiService } from '../../services/ui.service';
+import { Subscription } from 'rxjs';
 import { Task } from '../../Task';
 
 @Component({
@@ -14,7 +16,16 @@ export class AddTaskComponent implements OnInit {
 
   @Output() onAddTask: EventEmitter<Task> = new EventEmitter();
 
-  constructor() { }
+  showAddTask: boolean = false;
+  subscription: Subscription;
+
+  constructor(private ui: UiService) {
+    //we are subscribing to the observable that is returned from the onToggle() method
+    //and we are setting the value of showAddTask to the value that is returned from the observable
+    this.subscription = this.ui
+      .onToggle()
+      .subscribe((value) => this.showAddTask = value);
+   }
 
   ngOnInit(): void {
   }

@@ -34,6 +34,7 @@ export class TasksComponent implements OnInit {
 
   addTask(task: Task) {
     //add the task to the server
+    //update the UI
     this.taskService.addTask(task).subscribe((task) => this.tasks.push(task));
   }
 }
